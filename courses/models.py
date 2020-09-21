@@ -1,3 +1,14 @@
+
 from django.db import models
 
-# Create your models here.
+class Course(models.Model):
+  comment = models.ForeignKey(
+    comment,
+    default=1,
+    on_delete=models.CASCADE
+  )
+  Instructor = models.ForeignKey(
+    User,
+    default=1,
+    on_delete=models.CASCADE
+  )

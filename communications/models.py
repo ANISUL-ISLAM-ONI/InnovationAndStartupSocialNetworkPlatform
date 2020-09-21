@@ -23,3 +23,15 @@ class Post(models.Model):
     default=1,
     on_delete=models.CASCADE
   )
+  
+  class Message(models.Model):
+	sender = models.Foreignkey(
+        User,
+        related_name = "sender_user"
+    )
+	receiver = models.Foreignkey(
+        User,
+        related_name = "receiver_user"
+    )
+	message = models.CharField(max_length = 200)
+	received_at = models.DateTimeField(auto_now_add=True)

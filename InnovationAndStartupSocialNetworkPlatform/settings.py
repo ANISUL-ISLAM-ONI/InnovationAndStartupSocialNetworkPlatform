@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'newsfeed.apps.NewsfeedConfig',
     'userProfile.apps.UserprofileConfig',
+    'courses.apps.CoursesConfig',
 ]
 
 MIDDLEWARE = [

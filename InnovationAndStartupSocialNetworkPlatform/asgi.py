@@ -1,5 +1,5 @@
 """
-ASGI config for InnovationAndStartupSocialNetworkPlatform project.
+ASGI config for socialoni project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

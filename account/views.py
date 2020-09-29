@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 # Create your views here.
@@ -33,6 +34,13 @@ def userLogin(request) :
 
 		if user is not None :
 			login(request, user)
-			return HttpResponse('Logged in')
+			messages.success(request, 'Logged In')
+			return redirect('/feedpage')
 		else :
-			return HttpResponse('Invalid credentials')
+			messages.error(request, 'Invalid Creadentials')
+			return redirect('/')
+
+def userLogout(request) :
+	logout(request)
+	messages.success(request, 'Logged Out')
+	return redirect('/')

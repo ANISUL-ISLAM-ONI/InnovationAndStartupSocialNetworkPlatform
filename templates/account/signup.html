@@ -2,7 +2,6 @@
 
 {% block nav_btn1 %}
 
-<!-- Button trigger modal -->
 <button type="button" class="btn btn-info ml-2" data-toggle="modal" data-target="#loginModel">
 	Sign In
 </button>
@@ -16,22 +15,22 @@
 		{% csrf_token %}
 	  <div class="form-group">
 	    <label for="firstname">First Name</label>
-	    <input type="text" class="form-control" id="firstname" placeholder="Anisul" name="firstname">
+	    <input type="text" class="form-control" id="firstname" placeholder="enter your first name" name="firstname">
 	  </div>
 
 	  <div class="form-group">
 	    <label for="lastname">Last Name</label>
-	    <input type="text" class="form-control" id="lastname" placeholder="Islam" name="lastname">
+	    <input type="text" class="form-control" id="lastname" placeholder="enter your last name" name="lastname">
 	  </div>
 
 	  <div class="form-group">
 	    <label for="username">Username</label>
-	    <input type="text" class="form-control" id="username" placeholder="Oni" name="username">
+	    <input type="text" class="form-control" id="username" placeholder="username" name="username">
 	  </div>
 
 	  <div class="form-group">
 	    <label for="email">E-mail</label>
-	    <input type="email" class="form-control" id="email" placeholder="oni@gmail.com" name="email">
+	    <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
 	  </div>
 
 	  <div class="form-group">
@@ -50,9 +49,8 @@
 </div>
 {% endblock body %}
 
-{% block models %}
+{% block modals %}
 
-<!-- Modal -->
 <div class="modal fade" id="loginModel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="loginModelLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -80,4 +78,4 @@
   </div>
 </div>
 
-{% endblock models %}
+{% endblock modals %}

@@ -10,10 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+<<<<<<< HEAD
 
 from django.contrib.messages import constants
 
+=======
+>>>>>>> 50c716f7347afa3f30244c88cf8c88b48d93ab33
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,4 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+<<<<<<< HEAD
 MESSAGE_TAGS = {constants.ERROR : 'danger'}
+=======
+MEDIA_URL ='/media/'
+MEDIA_ROOT =os.path.join(BASE_DIR, "user_image/")
+>>>>>>> 50c716f7347afa3f30244c88cf8c88b48d93ab33

@@ -10,9 +10,9 @@ class Profile(models.Model):
     bio = models.TextField(default="Nothing", max_length=500)
     email = models.EmailField(max_length=50, blank=True)
     country = models.CharField(max_length=100, blank=True)
-    avater = models.ImageField(default='avater.png', upload_to='avater/')
     follower = models.ManyToManyField(User, blank=True, related_name='Friends')
     phone_nmber = models.CharField(max_length=13, blank=True)
-
+    image = models.ImageField(upload_to = 'user_image', default='image.png')
+    avater = models.ImageField(default='avater.png', upload_to='avater')
     def __str__(self):
         return self.user.username

@@ -16,10 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from Profile import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('account.urls'), name='account_app'),
+<<<<<<< HEAD
     path('feedpage/', include('feedpage.urls'), name='feedpage'),
     path('profile/', views.profile)
 ]
+=======
+    path('profile/', views.profile),
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+>>>>>>> 50c716f7347afa3f30244c88cf8c88b48d93ab33

@@ -37,9 +37,14 @@
 							<div class="hero-info">
 								<h2>General Info</h2>
 								<ul>
-									<li><span>Country</span>   :{{ user.country }}</li>
-									<li><span>E-mail</span>    :{{ user.email }}</li>
-									<li><span>Phone </span>    :{{ user.phone_nmber }}</li>
+									<form action="/action_page.php" method="get" target="_blank">
+                                    <label for="fname">First name:</label>
+                                    <input type="text" id="fname" name="fname"><br><br>
+                                    <label for="lname">Last name:</label>
+                                    <input type="text" id="lname" name="lname"><br><br>
+                                    <label for="lname">Country  : </label>
+                                    <input type="text" id="lcountry" name="lcountry"><br><br>
+                                    </form>
 								</ul>
 							</div>
 						</div>
@@ -49,7 +54,7 @@
 							</figure>
 						</div>
 						<div>
-							<p>Click on the "Choose File" button to upload a file:</p>
+							<p>Click on the "Choose File" button to upload a img:</p>
 
                             <form action="/action_page.php">
                             <input type="file" id="myFile" name="filename">

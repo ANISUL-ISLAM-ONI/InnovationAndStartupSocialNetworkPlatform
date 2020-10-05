@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('account.urls'), name='account_app'),
     path('feedpage/', include('feedpage.urls'), name='feedpage'),
-    path('profile/', views.profile)
+    path('profile/', views.profile),
+    path('edit_profile/', views.edit_profile),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -21,20 +21,20 @@ class coursePage(models.Model):
     def _str_(self):
         return str(self.user)
 
-class enroll(models.Model):
-    enrolluser = models.ManyToManyField(User, related_name="enrolleduser")
+
+class Enroll(models.Model):
+    user = models.ManyToManyField(User, related_name="enrollinguser")
     course = models.OneToOneField(coursePost, on_delete=models.CASCADE)
-    enrolls = models.IntegerField(default = 0)
 
     @classmethod
-    def enroll(cls, course, enrolled_user):
+    def enroll(cls, course, enrolling_user):
         obj, create = cls.objects.get_or_create(course = course)
-        obj.user.add(enrolled_user)
+        obj.user.add(enrolling_user)
 
     @classmethod
-    def dismiss(cls, course, dismissed_user):
+    def dismiss(cls, course, dismissing_user):
         obj, create = cls.objects.get_or_create(course = course)
-        obj.user.add(dismissed_user)
+        obj.user.add(dismissing_user)
 
     def _str_(self):
         return str(self.course)

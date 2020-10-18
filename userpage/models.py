@@ -68,4 +68,10 @@ class Share(Post, models.Model):
 
     def __str__(self):
         return str(self.user)
-# P p ; { * " : _
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    cmnt = models.TextField()
+    dat = models.DateTimeField(auto_now_add=True)

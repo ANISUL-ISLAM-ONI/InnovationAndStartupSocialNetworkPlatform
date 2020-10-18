@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Post, Profile, Like, Following
+from .models import Post, Profile, Like, Following, Comment
 from django.conf import settings
 import json
 from django.core.paginator import Paginator
@@ -10,6 +10,8 @@ from django.views import View
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from random import shuffle
+from django.http import HttpResponseRedirect
+from course.models import coursePost
 
 def userHome(request):
     #fetching post from database
@@ -21,11 +23,17 @@ def userHome(request):
     posts = list(postall)
     shuffle(posts)
     liked_ = [i for i in posts if Like.objects.filter(post = i, user = request.user)]
+    comments = {}
+    for p in posts :
+        coma = Comment.objects.filter(post=p)
+        comments[p.id] = coma
     data = {
         'posts':posts,
-        "liked_post":liked_
+        "liked_post":liked_,
+        "comments":comments,
     }
     return render(request, "userpage/postfeed.html", data)
+    
 
 def post(request):
     if request.method=="POST":
@@ -50,12 +58,24 @@ def delPost(request, ID):
     return redirect('/userpage')
 
 
+def showpost(request, ID):
+    post = Post.objects.get(id=ID)
+    comments = {}
+    coma = Comment.objects.filter(post=post)
+    comments[post.id] = coma
+    context = {
+        'post' : post,
+        'comments' : comments,
+    }
+    return render(request, 'userpage/postshowing.html', context)
+
+
 def userProfile(request, username):
     user = User.objects.filter(username=username)
     if user:
         user = user[0]
         profile = Profile.objects.get(user=user)
-        post = getPost(user)
+        post = Post.objects.filter(user=user)
         bio = profile.bio
         conn = profile.connection
         user_img = profile.userImage
@@ -63,6 +83,11 @@ def userProfile(request, username):
         #create a Following objects
         following_obj = Following.objects.get(user = user)
         follower, following = following_obj.follower.count(), following_obj.followed.count()
+        liked_ = [i for i in post if Like.objects.filter(post = i, user = request.user)]
+        comments = {}
+        for p in post :
+            coma = Comment.objects.filter(post=p)
+            comments[p.id] = coma
 
         data = {
             'user_obj':user,
@@ -73,6 +98,8 @@ def userProfile(request, username):
             'userImg':user_img,
             'posts':post,
             'connection':is_following,
+            "liked_post":liked_,
+            'comments':comments,
         }
     else: return HttpResponse("NO SUCH USER")
 
@@ -105,9 +132,14 @@ def likePost(request):
     return HttpResponse(response, content_type = "application/json")
 
 def comment(request):
-    comment_ = request.GET.get('comment', '')
-    print(comment_)
-    return render(request, 'userpage/comments.html')
+    sender = request.user
+    comment = request.POST.get('comment', '')
+    postiden = request.POST.get('postid', '')
+    post = Post.objects.get(id=postiden)
+    commentobj = Comment(post=post, user=sender, cmnt=comment)
+    commentobj.save()
+    print('success')
+    return redirect('/userpage')
 
 def follow(request, username):
     main_user = request.user
@@ -129,16 +161,33 @@ def follow(request, username):
     }
 
     response = json.dumps(resp)
-    return HttpResponse(response, content_type="application/json")
+    return HttpResponseRedirect('/userpage/'+ to_follow.username)
+    #HttpResponse(response, content_type="application/json")
 
-class Search_User(ListView):
+'''class Search_User(ListView):
     model = User
     template_name = "userpage/searchUser.html"
     paginate_by = 5 #page_obj
+
     def get_queryset(self):
+        select = self.request.GET.get("search", '')
+        print(select)
         username = self.request.GET.get("username", None)
         queryset = User.objects.filter(username__icontains = username).order_by('-id')
-        return queryset
+        return queryset '''
+
+def search(request):
+    val = request.POST.get("searching", "")
+    print(val)
+    seruser = User.objects.filter(username__icontains = val).order_by('-id')
+    serpost = Post.objects.filter(caption__icontains = val).order_by('-id')
+    sercourse = coursePost.objects.filter(title__icontains = val).order_by('-id')
+    context = {
+        'searchusers' : seruser,
+        'searchposts' : serpost,
+        'searchcourses' : sercourse, 
+    }
+    return render(request, 'userpage/search.html', context)
 
 class EditProfile(View):
     def post(self, request, *args, **kwargs):
@@ -150,5 +199,3 @@ class EditProfile(View):
         profile_obj.save()
 
         return HttpResponseRedirect(reverse("userpage:user_profile", args=(request.user.username,)))
-# P _ { : ; p [ "
-

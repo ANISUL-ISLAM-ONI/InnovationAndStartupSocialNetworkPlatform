@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('account.urls'), name='account_app'),
     path('userpage/', include('userpage.urls', namespace='userpage')),
     path('course/', include('course.urls'), name='course'),
+    path('message/', include('messanger.urls', namespace='message')),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

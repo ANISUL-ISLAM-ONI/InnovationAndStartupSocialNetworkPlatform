@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from .views import Search_User, EditProfile
+from .views import EditProfile
 
 app_name = 'userpage'
 
@@ -12,8 +12,9 @@ urlpatterns = [
     path("delete/<int:ID>", views.delPost, name='delpost'),
     path("<str:username>", views.userProfile, name='user_profile'),
     path("slug/comment", views.comment, name='comment'),
+    path("posting/<int:ID>", views.showpost, name='showpost'),
     path("user/follow/<str:username>", views.follow, name="follow"),
-    path("search/", Search_User.as_view(), name="search_user"),
+    path("search/", views.search, name="search"),
     path("<str:username>/edit", EditProfile.as_view(), name="editprofile"),
 
 ]

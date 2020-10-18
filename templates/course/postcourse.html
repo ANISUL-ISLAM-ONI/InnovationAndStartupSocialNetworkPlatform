@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block css %}
 
 
@@ -42,11 +42,17 @@
           {% endif %}
           
           <hr size='30px'>
-          <button class="btn btn-primary mr-4">Enroll</button>
+
+          <button class="btn btn-success enroll mr-3" id="{{ i.id }}">
+        {% if i in enrolled_course %}
+            <a href="{% url 'enroll' %}" style="color:white;" id="enrollbtn{{ i.id }}"> Decline </a>
+        {% else %}
+            <a href="{% url 'enroll' %}" style="color:white;" id="enrollbtn{{ i.id }}"> Enroll </a>
+        {% endif %}
+      </button>
           <button class="btn btn-warning mx-2">Comment</button>
-          <button class="btn btn-info mx-4">Repost</button>
           {% if request.user == i.user %}
-          <a class="btn btn-danger mx-4" href="{% url 'delcourse' i.id %}">Delete</a>
+          <a class="btn btn-danger mx-4 delete" href="{% url 'delcourse' i.id %}"" id="{{i.id }}">Delete</a>
           {% endif %}
         </div>
         </div>
@@ -87,6 +93,13 @@
 </div>
 </div>
 {% endblock modals %}
+
+{% block js %}
+
+<script src="{% static 'course/js/enroll.js' %}"></script>
+
+{% endblock js %}
+
 
 
 

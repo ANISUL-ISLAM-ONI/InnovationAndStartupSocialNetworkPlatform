@@ -1,14 +1,18 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
-from course.models import coursePost, coursePage
+from course.models import coursePost, coursePage, Enroll
+import json
+
 
 def courseHome(request):
-    #fetching post from database
-    posts = coursePost.objects.all().order_by('-pk')
-    data = {'posts':posts}
-
+    #filter(user__in = followed_users).order_by('-pk') | Post.objects.filter(user = request.user).order_by('-pk')
+    posts = coursePost.objects.all().order_by("-pk")
+    enrolled = [i for i in posts if Enroll.objects.filter(course = i, user = request.user)]
+    data = {
+        'posts':posts,
+        "enrolled_course":enrolled,
+    }
     return render(request, "course/postcourse.html", data)
-
 
 def post(request):
     if request.method == "POST":
@@ -46,3 +50,23 @@ def delCourse(request, courseId):
     course.delete()
     messages.info(request, "Post Deleted")
     return redirect('/course')
+
+def enrollCourse(request):
+    course_id = request.GET.get("enrollId", "")
+    course = coursePost.objects.get(pk=course_id)
+    user = request.user
+    enroll = Enroll.objects.filter(course = course, user=user)
+    enrolled = False
+
+    if enroll:
+        Enroll.dismiss(course, user)
+    else:
+        enrolled = True
+        Enroll.enroll(course, user)
+
+    resp = {
+        'enrolled':enrolled
+    }
+    response = json.dumps(resp)
+    return HttpResponse(response, content_type = "application/json")
+

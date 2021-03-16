@@ -37,11 +37,12 @@ def signup(request) :
             messages.error(request, "already taken")
             return redirect('/')
 
-        if password == confpassword :
+        if password == confpassword and password != '':
             user = User.objects.create_user(first_name = firstname, last_name = lastname, password = password, email = email, username = username)
             user.save()
             return render(request, 'account/signup.html', context)
         else :
+            messages.error(request, "Recheck your credentials.")
             context['finame'] = firstname
             context['laname'] = lastname
             context['uname'] = username
@@ -66,7 +67,7 @@ def userLogin(request) :
             messages.success(request, 'Logged In')
             return redirect('/userpage')
         else :
-            messages.error(request, 'Invalid Creadentials')
+            messages.error(request, 'Invalid Credentials')
             return redirect('/')
 
 def userLogout(request) :
